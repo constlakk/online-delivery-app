@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>Admin Area</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/css/admin_panel.css"/>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+  </head>
+
+  <body>
+
+    <nav class="navbar navbar-inverse">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="/">Delivery App</a>
+                
+            </div>
+            <div id="navbar" class="collapse navbar-collapse">
+                <ul class="nav navbar-nav">
+                    <% categories.forEach(function(category){ %>
+                        <li><a href="/products/<%= category.slug %>"><%= category.title %></a></li>
+                    <% }); %>
+                    <% if(user) { %>
+                        <li><a href="/admin">Admin Panel</a></li>
+                    <% } %>
+                </ul>
+                <ul class="nav navbar-nav navbar-right">
+                    <li><a href="/currency/eur" id="currency-eur">EUR</a></li>
+                    <li><a href="/currency/usd" id="currency-usd">USD</a></li>
+                    <li><a href="/currency/gbp" id="currency-gbp">GBP</a></li>    
+                    <li>
+                        <a href="/cart/checkout">My Cart (
+                            <% if (typeof cart !== "undefined") { %>
+                            <%= cart.length %>
+                            <% } else {%>
+                            0
+                            <% } %>
+                        )</a>
+                    </li>
+                    <% if(user) { %>
+                    <li><a href="/users/logout">Hello <%= user.username %>! Logout</a></li>
+                    <% } else {%>
+                    <li><a href="/users/login">Login</a></li>
+                    <% } %>
+                    
+                </ul>
+            </div>
+            
+    </nav>
+
+    <div class="container">
+        <%- messages('messages', locals) %>

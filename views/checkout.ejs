@@ -1,0 +1,98 @@
+<%- include ('_layouts/header') -%>
+
+<% if (typeof cart !== "undefined") { %>
+    <h1 class="page-title">My Cart</h1>
+    <br><br>
+    <form action="/cart/neworder" method="post">
+    <div class="form-group">
+        <label for="name">Name</label>
+        <input type="text" class="form-control" name="name" placeholder="Your name" required>
+    </div>
+    <div class="form-group">
+        <label for="address">Address</label>
+        <input type="text" class="form-control" name="address" placeholder="Your address" required>
+    </div>
+    <table class="table table-striped alignmiddle">
+        
+        <tr>
+            <th>Image</th>
+            <th>Title</th>
+            <th>Price</th>
+            <th>Quantity</th>
+            <th></th>
+            <th>Subtotal</th>
+        </tr>
+        
+        <% var total = 0; %>
+        <% var total_euro = 0; %>
+        <% cart.forEach(function(product){ %>
+        <% var sub = parseFloat(product.qty * product.price).toFixed(2) %>
+        <% var sub_euro = sub %>
+        <% sub = parseFloat(sub * currency_rates[currency_global]).toFixed(2) %>
+        <% total += +sub %>
+        <% total_euro += +sub_euro %>
+        <tr>
+            <td><img class="cpi" src="<%= product.image %>" alt="" width="30" height="30"></td>
+            <td><%= product.title %></td>
+            <td><%=currency_symbols[currency_global] %><%= parseFloat(product.price * currency_rates[currency_global]).toFixed(2) %></td>
+            <td><%= product.qty %></td>
+            <td>
+                <a href="/cart/update/<%= product.title %>?action=add">+</a>&nbsp;
+                <a href="/cart/update/<%= product.title %>?action=remove">-</a>&nbsp;
+                <a href="/cart/update/<%= product.title %>?action=clear">Clear</a>&nbsp;
+            </td>
+            <td><%=currency_symbols[currency_global] %><%= sub %></td>
+        </tr>
+        <% }); %>
+        <tr>
+            <td colspan="6" align="right"><b>Total: </b> <%=currency_symbols[currency_global] %><%= parseFloat(total).toFixed(2) %></td>
+        </tr>
+        <tr>
+            <td colspan="5" align="right">
+            </td>
+            <td colspan="5" align="right">
+                <a class="clearcart btn btn-danger" href="/cart/clear">Clear cart</a>
+            </td>
+        </tr>
+        
+    </table>
+
+    <% var num = 0; %>
+    <% cart.forEach(function(p){ %>
+        <% num++ %>
+        <input type="hidden" name="item_name" value="<%= p.title %>">
+        <input type="hidden" name="price" value="<%= p.price %>">
+        <input type="hidden" name="quantity" value="<%= p.qty %>">
+    <% }); %>
+    <input type="hidden" name="unique_products" value="<%= num %>">
+    <input type="hidden" name="total_amount_euro" value="<%= total_euro %>">
+    <input type="hidden" name="total_amount" value="<%= total %>">
+    <input class="btn btn-primary buynow" type="submit" src="" name="submit">
+    </form>
+    <% } else {%>
+    <h3 class="text-center">Your cart is empty.</h3>
+    <% } %>
+    
+    <script>
+        
+    $(function() {
+       
+        $('a.clearcart').on('click', function () {
+            if (!confirm('Confirm clear cart'))
+                return false;
+        });
+        
+        $('a.buynow').on('click', function (e) {
+            e.preventDefault();
+            
+            $.get('/cart/buynow', function() {
+                $('form.pp input[type=image]').click();
+                $('.ajaxbg').show();
+            });
+        });
+            
+    });
+        
+    </script>
+
+<%- include ('_layouts/footer') -%>

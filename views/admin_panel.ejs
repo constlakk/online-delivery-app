@@ -1,0 +1,35 @@
+<%- include ('_layouts/adminheader') -%>
+
+<h1 class="page-title"><%= title %></h1>
+
+    <br><br>
+    <% orders.forEach(function(order){ %>
+    <table class="table table-striped alignmiddle">
+        <% console.log(order) %>
+        <span>Order ID: <%= order.id %></span>
+        <tr>
+            
+            <th>Name</th>
+            <th>Address</th>
+            <th>Total Amount</th>
+            <th>Deliverables</th>
+        </tr>
+
+        <tr>
+            <td><%= order.name %></td>
+            <td><%= order.address %></td>
+            <td><%=currency_symbols[currency_global] %><%= parseFloat(order.total_amount * currency_rates[currency_global]).toFixed(2) %></td>
+            <td><% order.deliverables.forEach(function(deliverable){ %>
+                <%= deliverable.name %> x <%= deliverable.quantity %><br>
+            
+                <% }); %>
+
+            </td>
+        </tr>
+        <% }); %>
+
+        
+    </table>
+
+
+<%- include ('_layouts/footer') -%>
