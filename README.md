@@ -9,7 +9,7 @@ password: 1234
 
 # Build instructions
 
-Clone the repository to your machine and from the command line navigate into the newly created folder and run the commands:
+You need to have npm and node.js installed in your machine. Clone the repository to your machine and from the command line navigate into the newly created folder and run the commands:
 
 *npm install*
 
