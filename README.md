@@ -7,9 +7,9 @@ username: admin
 
 password: 1234
 
-#Build instructions
+# Build instructions
 
-Clone the repository in your machine and from the command line navigate into the newly created folder run the commands:
+Clone the repository to your machine and from the command line navigate into the newly created folder run the commands:
 
 *npm install*
 
