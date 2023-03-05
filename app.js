@@ -13,9 +13,8 @@ const fetch = require('node-fetch');
 const Category = require('./models/category');
 const Product = require('./models/product');
 
-//mongoose.connect(config.db_connection_string)
-console.log(process.env.MONGO_URI);
-mongoose.connect(process.env.MONGO_URI)
+mongoose.connect(config.db_connection_string)
+//mongoose.connect(process.env.MONGO_URI)
     .then(() => console.log('Connected to database.'))
     .catch(() => console.log('Cannot connect to database'));
 

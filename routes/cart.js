@@ -133,11 +133,13 @@ router.post('/neworder', function (req, res) {
 
     let deliverables = [];
 
-    for(let i = 0; i < num; i++) {
-        deliverables.push({name: req.body.item_name[i], quantity: req.body.quantity[i], subtotal: req.body.price[i] * req.body.quantity[i]});
+    if(num == 1) {
+        deliverables.push({name: req.body.item_name, quantity: req.body.quantity, subtotal: req.body.price * req.body.quantity});
+    } else {
+        for(let i = 0; i < num; i++) {
+            deliverables.push({name: req.body.item_name[i], quantity: req.body.quantity[i], subtotal: req.body.price[i] * req.body.quantity[i]});
+        }
     }
-
-    console.log(deliverables);
 
     let order = new Order({
         name: name,
@@ -145,8 +147,6 @@ router.post('/neworder', function (req, res) {
         deliverables: deliverables,
         total_amount: total_amount
     });
-
-    console.log(order);
 
     order.save(function (err) {
         if (err)
